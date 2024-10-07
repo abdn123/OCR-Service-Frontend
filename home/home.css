@@ -1,0 +1,165 @@
+html {
+  font-size: 16px !important;
+}
+
+a {
+  color: #000000
+}
+
+a:hover {
+  color: #000000;
+}
+
+h1 {
+  font-weight: bolder;
+  padding: 10px 10px;
+  color: #000000 !important; 
+}
+
+.active {
+  width: 50%;
+  padding: 5px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.k-edit-buttons {
+  align-items: center;
+  margin-top: 20px;
+}
+
+.status-badge {
+  color: white;
+  padding: 2px 8px;
+  border-radius: 7px;
+}
+
+.badge-red {
+  background: #dc3545 !important;
+}
+
+.badge-green {
+  background: #068323 !important;
+}
+
+.k-edit-form-container {
+  height: fit-content;
+  padding: 2% 2%;
+}
+
+.k-edit-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.k-cell-inner {
+  justify-content: center;
+}
+
+.k-window {
+  line-height: 0.5 !important;
+}
+
+.input-group-addon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 2%;
+  padding: 4%;
+}
+
+body {
+  background: #f3f3;
+  font-family: sans-serif !important;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.userGrid {
+  background-color: #f3f3f3;
+  border: none;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  background: #E4E7EB;
+  display: inline-block;
+  padding: 15px 28px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.active-reset {
+  display: flex;
+}
+
+.reset-password {
+  display: flex;
+  position: absolute;
+  right: 1%;
+}
+
+.users-details-container {
+  display: block;
+  background-color: #fff;
+  border-radius: 15px;
+  margin: 10px;
+  padding: 20px 20px;
+  transition: transform 0.2s;
+  width: 300px;
+  text-align: left;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+}
+
+.logout {
+  display: flex;
+  position: absolute;
+  right: 1%;
+  background: #ec4b5b;
+  color: #fff;
+  font-size: larger;
+  align-items: center;
+  border-radius: 4px;
+  margin: 2%;
+  padding: 0.4%;
+  border: 1px solid #ec4b5b;
+}
+
+.logout:hover {
+  color: #ec4b5b;
+  background: #fff;
+}
+
+.users-adduser-row {
+  display: flex;
+}
+
+.add-user-btn {
+  display: flex;
+  position: absolute;
+  right: 1%;
+  align-self: center;
+  margin: 2%;
+}
+
+.top-row {
+  display: flex;
+  background-color: #fff;
+  align-items: center;
+}
+
+.current-user {
+  display: flex;
+  align-items: center;
+  background: rgb(196, 196, 196);
+  padding: 1% 0% 1% 1%;
+  color: #000000;
+}
+
+h2 {
+  margin: inherit;
+}

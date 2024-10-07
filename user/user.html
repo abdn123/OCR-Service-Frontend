@@ -1,0 +1,8 @@
+<div class="top-row" data-ng-init="getCurrentUser()">
+    <button class = "logout" ng-click="logout()">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout
+    </button>
+    
+    <img ng-src="{{userImage}}" alt="UserImage">
+    <h1>Hello, {{currentUser.username}}</h1>
+</div>

@@ -1,0 +1,89 @@
+body {
+  display: flex;
+  background: #f3f3f3;
+  font-family: sans-serif;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h1 {
+  color: #046c08;
+  font-weight: bold;
+}
+
+.login-form-row {
+  display: flex;
+  margin: auto;
+}
+
+.login-form-container {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 10px 20px;
+  transition: transform 0.2s;
+  width: 500px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+label {
+  display: block;
+  color: #555;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #111;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.login {
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #046c08;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: white;
+  width: 100%;
+  background-color: #046c08;
+}
+
+.login:hover {
+  background-color: white;
+  color: #046c08;
+  border: 2px solid #046c08;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-field {
+  padding-right: 40px;
+}
+
+.input-addon {
+  position: absolute;
+  right: 10px;
+  top: 20%;
+}
+
+.invalidCredentials {
+  display: flex;
+  background-color: rgb(192, 192, 192);
+  color: red;
+  padding: 5px;
+  border-radius: 5px;
+}

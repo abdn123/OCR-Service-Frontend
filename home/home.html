@@ -1,0 +1,141 @@
+<body>
+  <div class="current-user">
+    <img ng-src="{{userImage}}" alt="UserImage">
+    <h2>&nbsp;Hello, {{currentUsername}}</h2>
+    <button class = "logout" ng-click="logout()">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout
+    </button>
+  </div>
+  <div class="top-row" data-ng-init="getCurrentUser()">
+    <h1>Admin Dashboard</h1>
+  </div>
+  <div class="users-adduser-row">
+    <div class="users-details-container" data-ng-init="getUsers()">
+      <p>Total Users: {{totalUsers}}</p>
+      <p class="badge-green active">Active Users: {{activeUsers}}</p>
+    </div>
+    <button class="add-user-btn" kendo-button ng-click=addUserWindow.center().open()><i class="fa fa-user-plus" aria-hidden="true"></i>Add User</button>
+  </div>
+  <div class="userGrid" kendo-grid="kendoGrid" k-options="userGrid"></div>
+  <div kendo-window="addUserWindow" 
+    k-visible="false"
+    k-width="fit-content"
+    k-height="fit-content" 
+    k-modal="true"
+    k-title="'Add New User'"
+    k-on-close="onAddUserWindowClose()">
+    <form ng-submit="addUser()">
+        <div class="k-edit-form-container">
+            <label for="username">Username:</label>
+            <input type="text" placeholder="Username" kendo-text-box ng-model="user.username" class="form-control" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" placeholder="Email" kendo-text-box ng-model="user.email" class="form-control" required><br>
+            
+            <label for="Password">Password:</label>
+            <div class="input-group">
+                <input type="{{passwordInputType}}" placeholder="Password" kendo-text-box ng-model="user.password" class="form-control" required />
+                <div class="input-group-addon">
+                    <a href="" ng-click="togglePasswordVisibility()"><i class="fa" ng-class="{'fa-eye-slash': passwordInputType === 'password', 'fa-eye': passwordInputType === 'text'}" aria-hidden="true"></i></a>
+                </div>
+            </div><br><br><br>
+            <label for="Role">Role</label>
+            <select kendo-dropdownlist ng-model="user.role" ng-init="user.role">
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+            <Label for="active">Active:  </Label>
+            <button kendo-switch ng-model="user.active"></button><br>
+            <div class="change-profile"></div>
+              <label>Profile Picture:</label>
+              <label for="new-profile" class="custom-file-upload">Change Profile Picture</label>
+              <input id="new-profile" type="file" class="k-upload" accept="image/jpeg" onchange="angular.element(this).scope().uploadFile(this.files)">
+              <img ng-src="{{imagePreview}}" ng-show="imagePreview" alt="Profile Image">
+            </div>
+            <div class="k-edit-buttons">
+                <button type="submit" kendo-button>Add User</button>
+                <button type="button" kendo-button ng-click="addUserWindow.close()">Cancel</button>
+            </div>
+        </div>
+    </form>
+  </div>
+  <div kendo-window="editUserWindow" 
+    k-visible="false"
+    k-width="fit-content"
+    k-height="fit-content" 
+    k-modal="true"
+    k-title="'Edit User'"
+    k-on-close="onEditUserWindowClose()">
+    <form ng-submit="editUser()">
+        <div class="k-edit-form-container">
+            <label>Username:</label>
+            <input type="text" placeholder="Username" kendo-text-box ng-model="user.username" class="form-control" required><br>
+
+            <label>Email:</label>
+            <input type="email" placeholder="Email" kendo-text-box ng-model="user.email" class="form-control" required><br>
+            <label>Role:</label>
+            <select kendo-dropdownlist ng-model="user.role">
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select><br><br>
+            <div class="active-reset">
+                <div>
+                    <Label>Active:&nbsp;</Label>
+                    <button kendo-switch ng-model="user.active"></button>
+                </div>
+                <div class="reset-password">
+                    <a href="" ng-click="resetPasswordWindowOpen()">Change Password</a>
+                </div>
+            </div>
+            <div class="change-profile">
+              <label>Profile Picture:</label>
+              <label for="profile" class="custom-file-upload">Change Profile Picture</label>
+              <input id="profile" type="file" class="k-upload" accept="image/jpeg" onchange="angular.element(this).scope().uploadFile(this.files)">
+              <img ng-src="{{imagePreview}}" alt="Profile Image">
+            </div>
+            <div class="k-edit-buttons">
+              <button type="submit" class="k-button" kendo-button>Submit</button>
+              <button type="button" class="k-button" kendo-button ng-click="editUserWindow.close()">Cancel</button>
+          </div>
+        </div>
+    </form>
+  </div>
+  <div kendo-window="resetPasswordWindow"
+    k-visible="false"
+    k-width="450"
+    k-height="400" 
+    k-modal="true"
+    k-title="'Reset Password'"
+    k-on-close="onResetPasswordWindowClose()">
+    <form ng-submit="resetPassword()">
+        <div class="k-edit-form-container">
+            <label>Enter Old Password:</label>
+            <div class="input-group">
+                <input type="{{passwordInputType}}" placeholder="Password" kendo-text-box ng-model="resetPasswordItems.oldPassword" class="form-control" required />
+                <div class="input-group-addon">
+                    <a href="" ng-click="togglePasswordVisibility()"><i class="fa" ng-class="{'fa-eye-slash': passwordInputType === 'password', 'fa-eye': passwordInputType === 'text'}" aria-hidden="true"></i></a>
+                </div>
+            </div><br>
+            <label>Enter New Password:</label>
+            <div class="input-group">
+                <input type="{{passwordInputType}}" placeholder="Password" kendo-text-box ng-model="resetPasswordItems.newPassword1" class="form-control" required />
+                <div class="input-group-addon">
+                    <a href="" ng-click="togglePasswordVisibility()"><i class="fa" ng-class="{'fa-eye-slash': passwordInputType === 'password', 'fa-eye': passwordInputType === 'text'}" aria-hidden="true"></i></a>
+                </div>
+            </div><br>
+            <label>Re-enter New Password:</label>
+            <div class="input-group">
+                <input type="{{passwordInputType}}" placeholder="Password" kendo-text-box ng-model="resetPasswordItems.newPassword2" class="form-control" required />
+                <div class="input-group-addon">
+                    <a href="" ng-click="togglePasswordVisibility()"><i class="fa" ng-class="{'fa-eye-slash': passwordInputType === 'password', 'fa-eye': passwordInputType === 'text'}" aria-hidden="true"></i></a>
+                </div>
+            </div><br>
+            <div class="k-edit-buttons">
+                <button type="submit" class="k-button" kendo-button>Submit</button>
+                <button type="button" class="k-button" kendo-button ng-click="resetPasswordWindow.close()">Cancel</button>
+            </div>
+        </div>
+    </form>
+  </div>
+  <div kendo-window="notificationWindow" k-visible="false">{{windowMessage}}</div>
+</body>

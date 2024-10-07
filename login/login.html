@@ -1,0 +1,19 @@
+<div class="login-form-row">
+  <div class="login-form-container center-block">
+  <form ng-submit="login()">
+        <h1>User Login</h1>
+        <h3>Enter your Login Credentials</h3>
+        <p class="invalidCredentials" ng-show="invalidCredentials">{{invalidCredentialsMessage}}</p>
+        <label>Username: </label>
+        <input  type="text" placeholder="Enter your Username or Email" ng-model="user.username" required>
+        <label>Password: </label>
+        <div class="input-group">
+            <input  type="{{inputType}}" placeholder="Enter your Password" ng-model="user.password" class="input-field" required>
+            <div class="input-addon">
+                <a href="" ng-click="togglePasswordVisibility()"><i class="fa" ng-class="{'fa-eye-slash': inputType === 'password', 'fa-eye': inputType === 'text'}" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <button class="login" type="submit">Login</button>
+    </form>
+  </div>
+</div>
