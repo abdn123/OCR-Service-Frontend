@@ -1,17 +1,8 @@
 {
-  "name": "ngEurope",
+  "name": "frontend-app",
   "version": "0.0.0",
-  "homepage": "https://github.com/auth0/ngeurope-demo",
-  "authors": [
-    "Martin Gontovnikas <martin@gon.to>"
-  ],
   "description": "ngEurope Auth0 sample",
   "main": "app.js",
-  "keywords": [
-    "ngEurope",
-    "sample",
-    "angular"
-  ],
   "license": "MIT",
   "dependencies": {
     "angularjs": "~1.3",
