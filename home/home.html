@@ -92,6 +92,7 @@
               <label for="profile" class="custom-file-upload">Change Profile Picture</label>
               <input id="profile" type="file" class="k-upload" accept="image/jpeg" onchange="angular.element(this).scope().uploadFile(this.files)">
               <img ng-src="{{imagePreview}}" alt="Profile Image">
+              <a href="" ng-click="removeImage()" ng-show="user.image">Remove</a>
             </div>
             <div class="k-edit-buttons">
               <button type="submit" class="k-button" kendo-button>Submit</button>

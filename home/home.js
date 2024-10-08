@@ -181,6 +181,11 @@ angular.module( 'app.home', [
         reader.readAsDataURL(file);
     };
 
+    $scope.removeImage = function() {
+        $scope.user.image = "";
+        $scope.imagePreview = "profile.jpg";
+    }
+
     $scope.addUser = function() {
         $http({
           method: 'POST',
