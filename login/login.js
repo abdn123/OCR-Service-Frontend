@@ -11,7 +11,7 @@ angular.module( 'app.login', [
     templateUrl: 'login/login.html'
   });
 })
-.controller( 'LoginCtrl', function LoginController( $scope, $https, store, $state, apiUrl) {
+.controller( 'LoginCtrl', function LoginController( $scope, $http, store, $state, apiUrl) {
 
   $scope.user = {};
   $scope.inputType = 'password';
@@ -25,7 +25,7 @@ angular.module( 'app.login', [
     };
 
   $scope.login = function() {
-    $https({
+    $http({
       url: apiUrl + '/api/v1/auth/login',
       method: 'POST',
       data: $scope.user
