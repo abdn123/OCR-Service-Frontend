@@ -118,6 +118,7 @@ angular.module( 'app.home', [
             "role": dataItem.role,
             "image": dataItem.image
         };
+        $scope.addChangePicture = dataItem.image == '' ? "Add Profile Picture" : "Change Profile Picture"
         $scope.imagePreview = dataItem.image == '' || !dataItem.image ? "profile.jpg" : "data:image/jpeg;base64," + dataItem.image;
         $scope.editUserWindow.center().open();
     }
@@ -242,7 +243,8 @@ angular.module( 'app.home', [
       $scope.resetUser();
     };
 
-    $scope.togglePasswordVisibility = function(inputType) {
+
+    $scope.togglePasswordVisibility = function() {
         if ($scope.passwordInputType === 'password') {
             $scope.passwordInputType = 'text';
         } else {
@@ -292,6 +294,7 @@ angular.module( 'app.home', [
 
     $scope.resetUser = function() {
       $scope.user = {};
+      $scope.imagePreview = "";
       $scope.user.role = "USER";
       $scope.user.active = true;
     }

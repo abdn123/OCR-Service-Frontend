@@ -48,7 +48,7 @@
             <button kendo-switch ng-model="user.active"></button><br>
             <div class="change-profile"></div>
               <label>Profile Picture:</label>
-              <label for="new-profile" class="custom-file-upload">Change Profile Picture</label>
+              <label for="new-profile" class="custom-file-upload">Add Profile Picture</label>
               <input id="new-profile" type="file" class="k-upload" accept="image/jpeg" onchange="angular.element(this).scope().uploadFile(this.files)">
               <img ng-src="{{imagePreview}}" ng-show="imagePreview" alt="Profile Image">
             </div>
@@ -89,7 +89,7 @@
             </div>
             <div class="change-profile">
               <label>Profile Picture:</label>
-              <label for="profile" class="custom-file-upload">Change Profile Picture</label>
+              <label for="profile" class="custom-file-upload">{{addChangePicture}}</label>
               <input id="profile" type="file" class="k-upload" accept="image/jpeg" onchange="angular.element(this).scope().uploadFile(this.files)">
               <img ng-src="{{imagePreview}}" alt="Profile Image">
               <a href="" ng-click="removeImage()" ng-show="user.image">Remove</a>

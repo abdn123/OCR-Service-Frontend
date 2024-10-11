@@ -7,8 +7,8 @@ angular.module( 'app', [
   'angular-storage',
   'kendo.directives'
 ])
-.constant('apiUrl', 'http://192.168.100.30:8000')
-.constant('apiPython', 'http://192.168.100.30:5000')
+.constant('apiUrl', '192.168.100.30:8000')
+.constant('apiPython', '192.168.100.30:5000')
 .config( function myAppConfig ($urlRouterProvider, jwtInterceptorProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/');
 

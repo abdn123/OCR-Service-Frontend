@@ -155,8 +155,8 @@ input[type="file"] {
 .current-user {
   display: flex;
   align-items: center;
-  background: rgb(196, 196, 196);
-  padding: 1% 0% 1% 1%;
+  background: #E4E7EB;
+  padding: 1% 1% 1% 1%;
   color: #000000;
 }
 
