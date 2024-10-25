@@ -48,4 +48,32 @@ angular.module( 'app.user', [
         store.remove('jwt');
         $state.go('login');
     }
+
+    $scope.uploadFile = function(files) {
+        
+        var file = files[0]
+        $scope.fileName = file.name;
+        $scope.fd = new FormData();
+        $scope.fd.append('file', file);
+        $scope.$apply();
+    };
+
+    $scope.submitFile = function() {
+        $http({
+          method: 'POST',
+          url: apiUrl + '/documents',
+          headers: {
+            'Authorization': "Bearer: " + JSON.parse(localStorage.getItem("jwt")),
+            'Content-Type': undefined
+          },
+          data: $scope.fd,
+          transformRequest: angular.identity
+        })
+        .then(function(response) {
+            $scope.fileUploadResponse = response.data;
+        })
+        .catch(function(response) {
+            $scope.fileUploadResponse = response.data;
+        })
+    }
 })

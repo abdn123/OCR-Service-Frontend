@@ -8,3 +8,12 @@ img {
     align-items: center;
     padding-left: 10px;
 }
+
+.file-input-box {
+    transform: translate(0, 50%);
+}
+
+.file-content {
+    display: flex;
+    padding: 10%;
+}
