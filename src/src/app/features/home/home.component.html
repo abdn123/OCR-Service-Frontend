@@ -1,0 +1,284 @@
+<div class="home-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</a>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-light me-2" routerLink="/user">
+                    <img [src]="userImage" class="navbar-avatar" alt="User">
+                    {{ currentUser?.username }}
+                </button>
+                <button class="btn btn-outline-light me-2" routerLink="/documents">
+                    <i class="bi bi-file-earmark-text me-2"></i>Documents
+                </button>
+                <button class="btn btn-outline-light" (click)="logout()">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stat-label">Total Users</div>
+                            <div class="stat-value">{{ userStats.totalUsers }}</div>
+                        </div>
+                        <i class="bi bi-people stat-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stat-label">Active Users</div>
+                            <div class="stat-value">{{ userStats.activeUsers }}</div>
+                        </div>
+                        <i class="bi bi-person-check stat-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="stat-label">Documents Searched</div>
+                            <div class="stat-value">{{ userStats.totalDocs }}</div>
+                        </div>
+                        <i class="bi bi-file-text stat-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management Card -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-people me-2"></i>User Management</h5>
+                <button class="btn btn-primary" (click)="openAddUserModal()">
+                    <i class="bi bi-person-plus me-2"></i>Add New User
+                </button>
+            </div>
+            <div class="card-body">
+                <kendo-grid class="ag-theme-alpine" style="height: 500px;" [data]="users">
+                    <kendo-grid-column field="id" title="ID" [width]="80"></kendo-grid-column>
+                    <kendo-grid-column field="image" title="Image" [width]="100">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <img [src]="dataItem.image ? 'data:image/jpeg;base64,' + dataItem.image : 'profile.jpg'"
+                                alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="username" title="Username" [width]="150"></kendo-grid-column>
+                    <kendo-grid-column field="email" title="Email" [width]="200"></kendo-grid-column>
+                    <kendo-grid-column field="role" title="Role" [width]="100"></kendo-grid-column>
+                    <kendo-grid-column field="docCount" title="Docs Searched" [width]="120"
+                        [style]="{ 'text-align': 'center', 'font-weight': 'bold', 'font-size': '16px' }"></kendo-grid-column>
+                    <kendo-grid-column field="active" title="Active" [width]="100">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span [class]="dataItem.active ? 'badge bg-success' : 'badge bg-danger'">
+                                {{ dataItem.active ? 'Active' : 'Inactive' }}
+                            </span>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column title="Actions" [width]="200">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary me-1" (click)="editUser(dataItem.id)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger me-1" (click)="deleteUser(dataItem.id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info" (click)="viewHistory(dataItem.id)">
+                                    <i class="bi bi-clock-history"></i>
+                                </button>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Add/Edit Modal -->
+<div class="modal" *ngIf="showUserModal" [class.show]="showUserModal" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-person me-2"></i>
+                    {{ isAddMode ? 'Add New User' : 'Edit User' }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" (click)="showUserModal = false"></button>
+            </div>
+            <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <img [src]="imagePreview" class="preview-image" alt="Preview">
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-secondary me-2" (click)="fileInput.click()">
+                                <i class="bi bi-image me-1"></i>{{ userForm.value.image ? 'Change' : 'Add' }} Picture
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" (click)="removeImage()"
+                                *ngIf="userForm.value.image">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <input #fileInput type="file" class="d-none" accept="image/*"
+                                (change)="onFileSelected($event)">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-person me-2"></i>Username</label>
+                        <input type="text" class="form-control" formControlName="username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-envelope me-2"></i>Email</label>
+                        <input type="email" class="form-control" formControlName="email" required>
+                    </div>
+
+                    <div class="mb-3" *ngIf="isAddMode">
+                        <label class="form-label"><i class="bi bi-lock me-2"></i>Password</label>
+                        <div class="input-group">
+                            <input [type]="showPassword ? 'text' : 'password'" class="form-control"
+                                formControlName="password" required>
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="togglePasswordVisibility()">
+                                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-shield me-2"></i>Role</label>
+                        <select class="form-select" formControlName="role">
+                            <option value="USER">User</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="activeCheck" formControlName="active">
+                        <label class="form-check-label" for="activeCheck">
+                            <i class="bi bi-check-circle me-2"></i>Active
+                        </label>
+                    </div>
+
+                    <div *ngIf="!isAddMode" class="mb-3">
+                        <button type="button" class="btn btn-warning w-100" (click)="openResetPasswordModal()">
+                            <i class="bi bi-key me-2"></i>Reset Password
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="showUserModal = false">Cancel</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+                        <i class="bi bi-check-lg me-2"></i>Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade" *ngIf="showUserModal" [class.show]="showUserModal"></div>
+
+<!-- Reset Password Modal -->
+<div class="modal" *ngIf="showResetPasswordModal" [class.show]="showResetPasswordModal" style="display: block;"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-key me-2"></i>Reset Password</h5>
+                <button type="button" class="btn-close btn-close-white"
+                    (click)="showResetPasswordModal = false"></button>
+            </div>
+            <form [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-lock me-2"></i>New Password</label>
+                        <div class="input-group">
+                            <input [type]="showPassword ? 'text' : 'password'" class="form-control"
+                                formControlName="password">
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="togglePasswordVisibility()">
+                                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-lock-fill me-2"></i>Confirm Password</label>
+                        <input type="password" class="form-control" formControlName="confirmPassword">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        (click)="showResetPasswordModal = false">Cancel</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="resetPasswordForm.invalid">
+                        <i class="bi bi-check-lg me-2"></i>Reset Password
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Document History Modal -->
+<div class="modal" *ngIf="showHistoryModal" [class.show]="showHistoryModal" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-clock-history me-2"></i>Document History: {{ historyUserName }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" (click)="showHistoryModal = false"></button>
+            </div>
+            <div class="modal-body">
+                <kendo-grid [data]="selectedUserDocuments" [sortable]="true" style="height: 400px;"
+                    class="ag-theme-alpine">
+                    <kendo-grid-column field="id" title="ID" [width]="100"></kendo-grid-column>
+                    <kendo-grid-column field="name" title="Name" [width]="500"></kendo-grid-column>
+                    <kendo-grid-column field="type" title="Type" [width]="300"></kendo-grid-column>
+                    <kendo-grid-column [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <button class="btn btn-sm btn-primary" (click)="viewDocument(dataItem.id)">View</button>
+                        </ng-template>
+                    </kendo-grid-column>
+                </kendo-grid>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="showHistoryModal = false">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Document View Modal -->
+<div class="modal" *ngIf="showDocumentModal" [class.show]="showDocumentModal" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="bi bi-file-earmark-text me-2"></i>Document: {{ selectedDocument?.name
+                    }}
+                </h4>
+                <button type="button" class="btn-close btn-close-white" (click)="showDocumentModal = false"></button>
+            </div>
+            <div class="modal-body document-details">
+                <h4>Text</h4>
+                <span>{{ selectedDocument?.text }}</span>
+                <h4>Metadata</h4>
+                <span>{{ selectedDocument?.metadata }}</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="showDocumentModal = false">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade" *ngIf="showDocumentModal" [class.show]="showDocumentModal"></div>

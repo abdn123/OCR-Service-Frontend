@@ -138,5 +138,19 @@
         </div>
     </form>
   </div>
+  <div kendo-window="userHistoryWindow"
+    k-visible="false"
+    k-modal="true"
+    k-width="700"
+    k-height="700" 
+    k-title="'History'"
+    k-on-close="onHistoryWindowClose()">
+      <div ng-repeat="history in userHistory">
+        <h3>File {{ $index + 1 }}</h3>
+        <p>{{history.name}}</p>
+        <p>{{history.type}}</p>
+        <p>{{history.text}}</p>
+      </div>
+    </div>
   <div kendo-window="notificationWindow" k-visible="false">{{windowMessage}}</div>
 </body>

@@ -1,0 +1,104 @@
+<div class="user-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-person-circle me-2"></i>User Profile</a>
+            <div class="d-flex">
+                <button class="btn btn-outline-light me-2" routerLink="/user">
+                    <img [src]="userImage" class="navbar-avatar" alt="User">
+                    {{ currentUser?.username }}
+                </button>
+                <button class="btn btn-outline-light me-2" routerLink="/documents">
+                    <i class="bi bi-file-earmark-text me-2"></i>My Documents
+                </button>
+                <button class="btn btn-outline-light" (click)="logout()">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- User Profile Card -->
+            <div class="col-md-6">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Profile Information</h5>
+                    </div>
+                    <div class="card-body" *ngIf="currentUser">
+                        <div class="text-center mb-4">
+                            <img [src]="userImage" class="profile-image" alt="Profile">
+                        </div>
+
+                        <div class="user-info">
+                            <div class="info-item">
+                                <label><i class="bi bi-person me-2"></i>Username:</label>
+                                <span>{{ currentUser.username }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label><i class="bi bi-envelope me-2"></i>Email:</label>
+                                <span>{{ currentUser.email }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label><i class="bi bi-shield-check me-2"></i>Status:</label>
+                                <span style="color: white;" class="badge"
+                                    [ngClass]="currentUser.active ? 'badge-green' : 'badge-red'">
+                                    {{ currentUser.active ? 'Active' : 'Inactive' }}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <label><i class="bi bi-star me-2"></i>Roles:</label>
+                                <span>
+                                    <span style="color: white;" *ngFor="let auth of currentUser.authorities"
+                                        class="badge bg-primary me-1">
+                                        {{ auth.authority.replace('ROLE_', '') }}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Upload Card -->
+            <div class="col-md-6">
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-cloud-upload me-2"></i>Upload Document</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-section">
+                            <div class="file-upload-zone" (click)="fileInput.click()">
+                                <i class="bi bi-cloud-arrow-up upload-icon"></i>
+                                <p class="mb-2">Click to select a file</p>
+                                <p class="text-muted small">Or drag and drop your file here</p>
+                                <input #fileInput type="file" class="d-none" (change)="onFileSelected($event)">
+                            </div>
+
+                            <div *ngIf="fileName" class="selected-file mt-3">
+                                <i class="bi bi-file-earmark me-2"></i>
+                                <span>{{ fileName }}</span>
+                            </div>
+
+                            <button class="btn btn-primary w-100 mt-3" (click)="uploadFile()"
+                                [disabled]="!selectedFile || isLoading">
+                                <span *ngIf="!isLoading">
+                                    <i class="bi bi-upload me-2"></i>Upload File
+                                </span>
+                                <span *ngIf="isLoading">
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    Uploading...
+                                </span>
+                            </button>
+
+                            <div *ngIf="uploadResponse" class="alert alert-info mt-3" role="alert">
+                                {{ uploadResponse }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+.home-page {
+    min-height: 100vh;
+    background-color: var(--light-bg);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    opacity: 0.6;
+}
+
+.preview-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* AG Grid row style overrides */
+:host ::ng-deep .ag-theme-alpine .ag-row {
+    cursor: pointer;
+}
+
+:host ::ng-deep .ag-theme-alpine .ag-cell {
+    display: flex;
+    align-items: center;
+}
+
+/* Modal enhancements */
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.modal-title {
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}

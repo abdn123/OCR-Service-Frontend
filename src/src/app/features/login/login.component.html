@@ -1,0 +1,55 @@
+<div class="login-page">
+    <div class="login-container fade-in">
+        <div class="login-header">
+            <h1 class="text-gradient">User Login</h1>
+            <p class="subtitle">Enter your credentials to continue</p>
+        </div>
+
+        <div *ngIf="invalidCredentials" class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-circle me-2"></i>
+            {{ invalidCredentialsMessage }}
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <label for="username" class="form-label">
+                    <i class="bi bi-person me-2"></i>Username or Email
+                </label>
+                <input type="text" class="form-control" id="username" formControlName="username"
+                    placeholder="Enter your username or email"
+                    [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">
+                    <i class="bi bi-lock me-2"></i>Password
+                </label>
+                <div class="input-group">
+                    <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password"
+                        formControlName="password" placeholder="Enter your password"
+                        [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
+                    <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 login-btn" [disabled]="loginForm.invalid || isLoading">
+                <span *ngIf="!isLoading">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </span>
+                <span *ngIf="isLoading">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Logging in...
+                </span>
+            </button>
+
+            <div class="text-center mt-3">
+                <p class="text-muted">
+                    Don't have an account?
+                    <a routerLink="/signup" class="signup-link">Sign up</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
