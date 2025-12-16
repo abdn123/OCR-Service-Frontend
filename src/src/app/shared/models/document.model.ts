@@ -7,6 +7,7 @@ export interface Document {
     metadata: any;
     user: number;
     classificationType: string;
+    document: String;
 }
 
 // Document Upload Response

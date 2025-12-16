@@ -249,6 +249,11 @@
                             <button class="btn btn-sm btn-primary" (click)="viewDocument(dataItem.id)">View</button>
                         </ng-template>
                     </kendo-grid-column>
+                    <kendo-grid-column [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <button class="btn btn-sm btn-primary" (click)="downloadDocument(dataItem.id)">Download</button>
+                        </ng-template>
+                    </kendo-grid-column>
                 </kendo-grid>
             </div>
             <div class="modal-footer">

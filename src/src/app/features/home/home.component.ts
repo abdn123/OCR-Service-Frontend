@@ -361,6 +361,30 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    downloadDocument(id: number): void {
+        this.documentService.downloadDocumentById(id).subscribe({
+            next: (doc: Document) => {
+                const byteCharacters = atob(doc.document as string);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = doc.name || 'document';
+                link.click();
+                window.URL.revokeObjectURL(url);
+            },
+            error: (error) => {
+                console.error('Error downloading document:', error);
+                alert('Error downloading document');
+            }
+        });
+    }
+
     togglePasswordVisibility(): void {
         this.showPassword = !this.showPassword;
     }

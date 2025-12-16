@@ -42,4 +42,8 @@ export class DocumentService {
     getDocumentById(id: number): Observable<Document> {
         return this.http.get<Document>(`${this.apiUrl}/documents/document/${id}`);
     }
+
+    downloadDocumentById(id: number): Observable<Document> {
+        return this.http.get<Document>(`${this.apiUrl}/documents/download/${id}`);
+    }
 }
