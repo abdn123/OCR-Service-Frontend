@@ -70,9 +70,9 @@
                     </div>
                     <div class="card-body">
                         <kendo-grid [data]="documents" [sortable]="true" style="height: 500px;" class="ag-theme-alpine">
-                            <kendo-grid-column field="id" title="ID" [width]="100"></kendo-grid-column>
                             <kendo-grid-column field="name" title="Name" [width]="500"></kendo-grid-column>
                             <kendo-grid-column field="type" title="Type" [width]="300"></kendo-grid-column>
+                            <kendo-grid-column field="classificationType" title="Class Type" [width]="300"></kendo-grid-column>
                             <kendo-grid-column [width]="300">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <button class="btn btn-sm btn-primary" (click)="viewDocument(dataItem.id)">View</button>

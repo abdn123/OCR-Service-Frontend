@@ -66,8 +66,7 @@
             </div>
             <div class="card-body">
                 <kendo-grid class="ag-theme-alpine" style="height: 500px;" [data]="users">
-                    <kendo-grid-column field="id" title="ID" [width]="80"></kendo-grid-column>
-                    <kendo-grid-column field="image" title="Image" [width]="100">
+                    <kendo-grid-column field="image" title="" [width]="50">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <img [src]="dataItem.image ? 'data:image/jpeg;base64,' + dataItem.image : 'profile.jpg'"
                                 alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
@@ -242,9 +241,9 @@
             <div class="modal-body">
                 <kendo-grid [data]="selectedUserDocuments" [sortable]="true" style="height: 400px;"
                     class="ag-theme-alpine">
-                    <kendo-grid-column field="id" title="ID" [width]="100"></kendo-grid-column>
                     <kendo-grid-column field="name" title="Name" [width]="500"></kendo-grid-column>
-                    <kendo-grid-column field="type" title="Type" [width]="300"></kendo-grid-column>
+                    <kendo-grid-column field="type" title="File Type" [width]="300"></kendo-grid-column>
+                    <kendo-grid-column field="classificationType" title="Class Type" [width]="300"></kendo-grid-column>
                     <kendo-grid-column [width]="300">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <button class="btn btn-sm btn-primary" (click)="viewDocument(dataItem.id)">View</button>
