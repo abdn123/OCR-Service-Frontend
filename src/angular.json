@@ -34,7 +34,7 @@
               {
                 "glob": "profile.jpg",
                 "input": "..",
-                "output": "../"
+                "output": "/"
               },
               {
                 "glob": "cert.pem",
