@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://192.168.100.211:8000'
+    apiUrl: 'https://ocr-service-production-01db.up.railway.app:8000'
 };
