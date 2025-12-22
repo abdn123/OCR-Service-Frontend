@@ -1,18 +1,19 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GridComponent, GridModule, KENDO_GRID } from '@progress/kendo-angular-grid';
 import { DocumentService } from '../../core/services/document.service';
 import { UserService } from '../../core/services/user.service';
 import { AuthService } from '../../core/services/auth.service';
-import { Document } from '../../shared/models/document.model';
+import { Document, DocumentUploadResponse, InvoiceContent } from '../../shared/models/document.model';
 import { User } from '../../shared/models/user.model';
 
 
 @Component({
     selector: 'app-documents',
     standalone: true,
-    imports: [CommonModule, GridModule, GridComponent, RouterLink],
+    imports: [CommonModule, GridModule, GridComponent, RouterLink, ReactiveFormsModule],
     templateUrl: './documents.component.html',
     styleUrl: './documents.component.css'
 })
@@ -21,6 +22,7 @@ export class DocumentsComponent implements OnInit {
     private userService = inject(UserService);
     private authService = inject(AuthService);
     private router = inject(Router);
+    private fb = inject(FormBuilder);
 
     documents: Document[] = [];
     selectedFile: File | null = null;
@@ -35,9 +37,27 @@ export class DocumentsComponent implements OnInit {
     historyUserName = '';
     showDocumentModal: boolean = false;
     
+    // Invoice modal properties
+    showInvoiceModal: boolean = false;
+    invoiceContent: InvoiceContent | null = null;
+    invoiceForm!: FormGroup;
+    isInvoiceValid: boolean = false;
+    
     ngOnInit(): void {
         this.isAdmin = this.authService.hasRole('ROLE_ADMIN');
         this.loadDocuments();
+        
+        this.invoiceForm = this.fb.group({
+            invoice_number: ['', [Validators.required, Validators.minLength(1)]],
+            invoice_date: ['', [Validators.required]],
+            total_amount: ['', [Validators.required, Validators.min(0)]],
+            vendor_name: ['', [Validators.required, Validators.minLength(1)]]
+        });
+        
+        this.invoiceForm.valueChanges.subscribe(() => {
+            this.isInvoiceValid = this.invoiceForm.valid;
+        });
+        
         this.userService.getCurrentUser().subscribe({
             next: (user) => {
                 this.currentUser = user;
@@ -91,16 +111,40 @@ export class DocumentsComponent implements OnInit {
             return;
         }
 
+        this.uploadResponse = '';
         this.isLoading = true;
         const formData = new FormData();
         formData.append('file', this.selectedFile);
 
         this.documentService.uploadDocument(formData).subscribe({
-            next: () => {
+            next: (res: DocumentUploadResponse) => {
                 this.uploadResponse = 'Document uploaded successfully!';
                 this.isLoading = false;
                 this.selectedFile = null;
                 this.fileName = '';
+                if (res.classificationType === 'invoice' && res.content) {
+                    try {
+                        const parsedContent: InvoiceContent = typeof res.content === 'string' 
+                            ? JSON.parse(res.content) 
+                            : res.content;
+                        
+                        this.invoiceContent = parsedContent;
+                        console.log('Invoice content:', this.invoiceContent);
+                        
+                        const processedContent = {
+                            invoice_number: parsedContent.invoice_number || '',
+                            invoice_date: parsedContent.invoice_date || '',
+                            total_amount: parsedContent.total_amount || '',
+                            vendor_name: parsedContent.vendor_name || ''
+                        };
+                        
+                        this.invoiceForm.patchValue(processedContent);
+                        this.showInvoiceModal = true;
+                    } catch (error) {
+                        console.error('Error parsing invoice content:', error);
+                        this.uploadResponse = 'Error parsing invoice data from document';
+                    }
+                }
                 this.loadDocuments();
             },
             error: (error) => {
@@ -157,5 +201,32 @@ export class DocumentsComponent implements OnInit {
         } else {
             this.router.navigate(['/user']);
         }
+    }
+
+    // Invoice modal methods
+    saveInvoice(): void {
+        if (this.invoiceForm.valid) {
+            this.invoiceContent = this.invoiceForm.value;
+            this.showInvoiceModal = false;
+            // Here you could send the validated invoice data to the backend
+            console.log('Invoice saved:', this.invoiceContent);
+        }
+    }
+
+    validateInvoice(): void {
+        if (this.invoiceForm.valid) {
+            this.isInvoiceValid = true;
+            alert('Invoice data is valid!');
+        } else {
+            this.isInvoiceValid = false;
+            alert('Please fill in all required fields correctly.');
+        }
+    }
+
+    closeInvoiceModal(): void {
+        this.showInvoiceModal = false;
+        this.invoiceForm.reset();
+        this.invoiceContent = null;
+        this.isInvoiceValid = false;
     }
 }

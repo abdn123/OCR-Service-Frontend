@@ -113,3 +113,91 @@
     </div>
 </div>
 <div class="modal-backdrop fade" *ngIf="showDocumentModal" [class.show]="showDocumentModal"></div>
+
+<!-- Invoice Validation Modal -->
+<div class="modal" *ngIf="showInvoiceModal" [class.show]="showInvoiceModal" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="bi bi-receipt me-2"></i>Invoice Validation
+                </h4>
+                <button type="button" class="btn-close btn-close-white" (click)="closeInvoiceModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="invoiceForm" class="invoice-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="invoice_number" class="form-label">Invoice Number *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="invoice_number" 
+                                   formControlName="invoice_number"
+                                   [class.is-invalid]="invoiceForm.get('invoice_number')?.invalid && invoiceForm.get('invoice_number')?.touched">
+                            <div class="invalid-feedback" *ngIf="invoiceForm.get('invoice_number')?.invalid && invoiceForm.get('invoice_number')?.touched">
+                                Invoice number is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="invoice_date" class="form-label">Invoice Date *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="invoice_date" 
+                                   formControlName="invoice_date"
+                                   [class.is-invalid]="invoiceForm.get('invoice_date')?.invalid && invoiceForm.get('invoice_date')?.touched">
+                            <div class="invalid-feedback" *ngIf="invoiceForm.get('invoice_date')?.invalid && invoiceForm.get('invoice_date')?.touched">
+                                Invoice date is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="total_amount" class="form-label">Total Amount *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="total_amount" 
+                                   formControlName="total_amount" 
+                                   step="0.01"
+                                   min="0"
+                                   [class.is-invalid]="invoiceForm.get('total_amount')?.invalid && invoiceForm.get('total_amount')?.touched">
+                            <div class="invalid-feedback" *ngIf="invoiceForm.get('total_amount')?.invalid && invoiceForm.get('total_amount')?.touched">
+                                Total amount is required and must be greater than 0.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="vendor_name" class="form-label">Vendor Name *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="vendor_name" 
+                                   formControlName="vendor_name"
+                                   [class.is-invalid]="invoiceForm.get('vendor_name')?.invalid && invoiceForm.get('vendor_name')?.touched">
+                            <div class="invalid-feedback" *ngIf="invoiceForm.get('vendor_name')?.invalid && invoiceForm.get('vendor_name')?.touched">
+                                Vendor name is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3" *ngIf="isInvoiceValid">
+                        <i class="bi bi-check-circle me-2"></i>
+                        All invoice fields are valid and ready to save.
+                    </div>
+                    
+                    <div class="alert alert-warning mt-3" *ngIf="!isInvoiceValid && invoiceForm.touched">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Please correct the highlighted fields before saving.
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeInvoiceModal()">Cancel</button>
+                <button type="button" class="btn btn-info" (click)="validateInvoice()">
+                    <i class="bi bi-check-circle me-2"></i>Validate
+                </button>
+                <button type="button" class="btn btn-primary" (click)="saveInvoice()" [disabled]="!isInvoiceValid">
+                    <i class="bi bi-save me-2"></i>Save Invoice
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade" *ngIf="showInvoiceModal" [class.show]="showInvoiceModal"></div>

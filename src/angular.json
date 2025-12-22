@@ -33,7 +33,7 @@
               },
               {
                 "glob": "profile.jpg",
-                "input": "..",
+                "input": "src",
                 "output": "/"
               },
               {
